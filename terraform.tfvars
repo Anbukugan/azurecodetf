@@ -25,7 +25,7 @@ rt_name                                 = ["tier1","tier2"]
 
 
 # Parameter for Azure Resources Tags
-#tagvalue                                 =  {client_segment = "abcd"}  
+tagvalue                                 =  {client_segment = "abcd"}  
 
 # Parameter for the Public IP Creation
 public_ip_names                          = ["project1"]
