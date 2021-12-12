@@ -8,7 +8,7 @@ environment                              = "ce"
 region                                   = "uksouth"
 
 # Parameter for Create Virtual network and Subnets
-#vnet_name                                = ["cloud-engg-project1"]
+vnet_name                                = ["cloud-engg-project1"]
 vnet_address                             = ["10.30.0.0/16"]
 subnet_names                             = ["tier1","tier2"]
 subnet_range                             = ["10.30.0.0/24","10.30.1.0/24"]
@@ -25,11 +25,7 @@ rt_name                                 = ["tier1","tier2"]
 
 
 # Parameter for Azure Resources Tags
-tagvalue                                 =  {
-
-      client_segment                     = "abcd"
-     
-}  
+#tagvalue                                 =  {client_segment = "abcd"}  
 
 # Parameter for the Public IP Creation
 public_ip_names                          = ["project1"]
