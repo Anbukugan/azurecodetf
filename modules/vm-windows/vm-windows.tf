@@ -1,7 +1,3 @@
-# Provider
-provider "azurerm" {
-features {}
-}
 # Resource creation for virtual machine
 resource "azurerm_windows_virtual_machine" "virtual_machine" {
   count                 = var.vm_enable == 1 ? length(var.vm_name) : 0
