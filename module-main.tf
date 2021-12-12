@@ -1,10 +1,14 @@
 provider "azurerm" {
-features{} 
+  features{} 
+  subscription_id = "4a78c3f4-d6dc-4bdd-bc32-f8e08408c784"
+  client_id       = "55848068-8357-4908-bfbd-72789bb52c0d"
+  client_secret   = var.client_secret
+  tenant_id       = "2f7111bb-e274-403b-ac0b-01725a19ccf1"
 }
 
 # Modules definition for creating resource group
 module "resource_group" {
- source                                     = "../modules/resource-group"
+ source                                     = "./modules/resource-group"
  resource_group_name                        =  var.resource_group_name
  region                                     =  var.region
  tagvalue                                   =  var.tagvalue
@@ -16,7 +20,7 @@ module "resource_group" {
 
 # Module to create Vnet for our project
 module "projectvnet" {
-  source                                  = "../modules/vnet"
+  source                                  = "./modules/vnet"
   resource_group_name                     = module.resource_group.resource_group_name
   vnet_enable                             = var.vnet_enable
   region                                  = var.region
@@ -29,7 +33,7 @@ module "projectvnet" {
 
 # Module to create Subnets
 module "projectsubnet" {
-  source                                  = "../modules/subnet"
+  source                                  = "./modules/subnet"
   resource_group_name                     = module.resource_group.resource_group_name
   subnet_count                            = var.subnet_count
   vnet_name                               = module.projectvnet.vnet_name[0]
@@ -43,7 +47,7 @@ module "projectsubnet" {
 
 # Module to create NSG for our project
 module "projectnsg" {
-  source                                  = "../modules/nsg"
+  source                                  = "./modules/nsg"
   nsg_enable                              = var.nsg_enable
   nsg_name                                = var.nsg_name
   region                                  = var.region
@@ -54,7 +58,7 @@ module "projectnsg" {
 
 # Module to create NSG rules for our project
 module "projectnsg1_rules" {
-  source                                  = "../modules/nsg-rules"
+  source                                  = "./modules/nsg-rules"
   nsg_name                                = module.projectnsg.nsg_names[0]
   resource_group_name                     = module.resource_group.resource_group_name
   nsg_rules                               = var.nsg_tier1_rules
@@ -62,7 +66,7 @@ module "projectnsg1_rules" {
 
 # Module to create NSG rules for our project
 module "projectnsg2_rules" {
-  source                                  = "../modules/nsg-rules"
+  source                                  = "./modules/nsg-rules"
   nsg_name                                = module.projectnsg.nsg_names[1]
   resource_group_name                     = module.resource_group.resource_group_name
   nsg_rules                               = var.nsg_tier2_rules
@@ -72,7 +76,7 @@ module "projectnsg2_rules" {
 
 # Module for Subnet Associations with NSG's
 module "nsg_association_subnet_Tiers" {
-    source                                = "../modules/nsg-association"
+    source                                = "./modules/nsg-association"
     nsg_enable                            = var.nsg_enable
     subnet_count                          = var.subnet_count
     subnet_id                             = module.projectsubnet.subnet_id
@@ -83,7 +87,7 @@ module "nsg_association_subnet_Tiers" {
 
 # Module to create Routetables
 module "projectrt" {
-    source                                = "../modules/routetable"
+    source                                = "./modules/routetable"
     rt_enable                             = var.rt_enable
     subnet_count                          = var.subnet_count
     rt_name                               = var.rt_name
@@ -96,7 +100,7 @@ module "projectrt" {
 
 # Module for routatable association with All Tier subnets
 module "rt_association_subnet_Tier1" {
-    source                                = "../modules/routetable-association"
+    source                                = "./modules/routetable-association"
     rt_enable                             = var.rt_enable
     subnet_count                          = var.subnet_count
     subnet_id                             = module.projectsubnet.subnet_id
@@ -106,7 +110,7 @@ module "rt_association_subnet_Tier1" {
 
 # Module to Create Public IP Address
   module "public_ip" {
-  source                                  = "../modules/public-ip"
+  source                                  = "./modules/public-ip"
   public_ip_enable                        = var.public_ip_enable
   public_ip_names                         = var.public_ip_names
   allocation                              = var.public_ip_allocation_method
@@ -119,7 +123,7 @@ module "rt_association_subnet_Tier1" {
 
 # Module to create NIC for web server
 module "web_nic" {
-  source                             = "../modules/network-interface-public"
+  source                             = "./modules/network-interface-public"
   nic_enable                         = var.web_nic_enable
   resource_group_name                = module.resource_group.resource_group_name
   region                             = var.region
@@ -136,7 +140,7 @@ module "web_nic" {
 
 # Module to create NIC for DB
 module "db_nic" {
-  source                             = "../modules/network-interface-private"
+  source                             = "./modules/network-interface-private"
   nic_enable                         = var.db_nic_enable
   resource_group_name                = module.resource_group.resource_group_name
   region                             = var.region
@@ -152,7 +156,7 @@ module "db_nic" {
 
 # Module to create web server
 module "web" {
-  source                             = "../modules/vm-linux"
+  source                             = "./modules/vm-linux"
   vm_enable                          = var.web_vm_enable
   region                             = var.region
   resource_group_name                = module.resource_group.resource_group_name
@@ -179,7 +183,7 @@ module "web" {
 # Module to create db server
 
 module "db" {
-  source                             = "../modules/vm-linux"
+  source                             = "./modules/vm-linux"
   vm_enable                          = var.db_vm_enable
   region                             = var.region
   resource_group_name                = module.resource_group.resource_group_name
@@ -199,13 +203,3 @@ module "db" {
   tagvalue                           = var.tagvalue
  disable_password_authentication     = var.db_disable_password_authentication
 }
-
-
-
-
-
-
-
-
-
-
