@@ -15,7 +15,7 @@ subnet_range                             = ["10.30.0.0/24","10.30.1.0/24"]
 
 # Parameter for Create Network Security Groups
 nsg_names                                = ["tier1","tier2"]
-nsg_tier1_rules                          = ["Allow_Port80_Inbound","Allow_Port443_Inbound","Deny_Virtualnetwork_Inbounds"]
+nsg_tier1_rules                          = ["Allow_Port80_Inbound","Allow_Port443_Inbound","Allow_PS_Remoting"]
 nsg_tier2_rules                          = ["Deny_Virtualnetwork_Inbound","Allow_Azuremonitor_Outbound","Deny_Internet_Outbound"]
 
 
